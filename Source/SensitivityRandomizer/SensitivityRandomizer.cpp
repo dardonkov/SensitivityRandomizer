@@ -19,8 +19,9 @@ using namespace std;
 using namespace arma;
 
 int
-	RUNTIME = 30, // Set how long program will run for (without manual termination) in minutes- Default = 30 mins
-	SMOOTH_AMT = 2; // Set level of smoothing (between 0-5)
+RUNTIME = 30, // Set how long program will run for (without manual termination) in minutes- Default = 30 mins
+SMOOTH_AMT = 2, // Set level of smoothing (between 0-5)
+PAUSE_KEY = 0x40; //Set default pause key to "F6"
 
 double
 	MAX_SENS = 2,    // maximum allowed sensitivity
@@ -71,6 +72,11 @@ void setUp()
 	std::printf("Sensitivity Randomizer \n======================\n");
 	std::printf("By: Whisper & El Bad\n\n");
 	SetConsoleTextAttribute(hConsole, 0x08);
+}
+
+void setPauseKey()
+{
+
 }
 
 auto generateSensitivities()
@@ -325,6 +331,7 @@ int main()
 		final_y;
 
 	setUp();
+	setPauseKey();
 	tie(final_x, final_y) = generateSensitivities();
 	if (TYPE == 1) { tie(final_x, final_y) = smooth(final_x, final_y); }
 
@@ -414,7 +421,8 @@ int main()
 		{
 			InterceptionKeyStroke& kstroke = *(InterceptionKeyStroke*)& stroke;
 			interception_send(context, device, &stroke, 1);
-			if (kstroke.code == 0x19 && (GetTickCount64() - lastpress > 250)) 
+			//std::printf("Keystroke: %x", kstroke.code);
+			if (kstroke.code == PAUSE_KEY && (GetTickCount64() - lastpress > 250)) 
 			{
 				lastpress = GetTickCount64();
 				paused = !paused;
