@@ -169,7 +169,7 @@ auto generateSensitivities()
 
 	SetConsoleCursorPosition(hConsole, coord);
 	SetConsoleTextAttribute(hConsole, 0x5f);
-	std::printf(" [P] to PAUSE ");
+	std::printf(" [F6] to PAUSE ");
 	SetConsoleTextAttribute(hConsole, 0x08);
 
 	coord.X = 0;
